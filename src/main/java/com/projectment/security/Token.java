@@ -24,7 +24,7 @@ public class Token {
 
     private long expiresAt;
 
-    private boolean isRevoked;
+    private boolean isRevoked = false;
 
     public Token(String value, int subjectId, long expiresAt) {
         this.value = value;

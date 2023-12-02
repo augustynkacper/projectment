@@ -27,13 +27,13 @@ public class JwtUtil {
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiration))
                 .subject(String.valueOf(user.getId()))
-                .signWith(getSignKey())
+                .signWith(getSignatureKey())
                 .compact();
     }
 
     public Claims extractClaims(String token) {
         return Jwts.parser()
-                .verifyWith(getSignKey())
+                .verifyWith(getSignatureKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
@@ -43,7 +43,11 @@ public class JwtUtil {
         return extractClaims(token).getSubject();
     }
 
-    private SecretKey getSignKey() {
+    public long extractExpirationTime(String token) {
+        return extractClaims(token).getExpiration().getTime();
+    }
+
+    private SecretKey getSignatureKey() {
         byte[] keyBytes = DECODER.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
