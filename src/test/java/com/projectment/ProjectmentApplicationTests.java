@@ -1,4 +1,4 @@
-package com.projectment.projectment;
+package com.projectment;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
