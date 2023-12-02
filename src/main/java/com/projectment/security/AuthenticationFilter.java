@@ -26,13 +26,15 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
 
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+
         if (isEmpty(authorizationHeader) || !authorizationHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
         String token = authorizationHeader.substring(7);
-        String userEmail = jwtUtil.getProperty(token, "email");
+
+        String userId = jwtUtil.extractUserId(token);
 
     }
 }

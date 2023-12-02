@@ -2,23 +2,26 @@ package com.projectment.security;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "_user")
+@NoArgsConstructor
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private String id;
 
     private String firstName;
 
@@ -29,7 +32,14 @@ public class User implements UserDetails {
     private String password;
 
     @ElementCollection
-    private Set<String> authorities;
+    private Set<String> authorities = new HashSet<>();
+
+    public User(String firstName, String lastName, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -65,5 +75,13 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void addAuthority(String role) {
+        this.authorities.add(role);
+    }
+
+    public void addAuthorities(Set<String> roles){
+        this.authorities.addAll(roles);
     }
 }

@@ -1,26 +1,39 @@
 package com.projectment;
 
+import com.projectment.security.JwtUtil;
+import com.projectment.security.User;
+import com.projectment.service.UserService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.Base64;
+import java.util.Set;
+
 
 @SpringBootApplication
 public class ProjectmentApplication {
 
+	private static UserService userService;
+
+	public ProjectmentApplication(UserService userService) {
+		ProjectmentApplication.userService = userService;
+	}
+
+
 	public static void main(String[] args) {
+		JwtUtil jwtUtil = new JwtUtil();
 
-		String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
-		String[] chunks = token.split("\\.");
-		Base64.Decoder decoder = Base64.getUrlDecoder();
 
-		String header = new String(decoder.decode(chunks[0]));
-		String payload = new String(decoder.decode(chunks[1]));
+		var claims = jwtUtil.extractClaims("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMiIsIm5hbWUiOiJKb2huIERvZSIsInJvbGVzIjpbImRyaXZlciIsIm1hbmFnZXIiXSwiaWF0IjoxNzAxNTQ3MTg5LCJleHAiOjE3MDE1NDgzODl9.8KcrxFO0gfEm8qOxqsbqLYS6O-zbl1XTInzYVsDFhsXZpB3RWf6vCbPl2QeZ7O4oCGEBp9Qz7Cw15879lllUSA");
 
-		System.out.println(header);
-		System.out.println(payload);
+		System.out.println(claims.getSubject());
+		System.out.println(claims);
 
 		SpringApplication.run(ProjectmentApplication.class, args);
+
+		// create sample user
+		var user = new User("john", "doe", "john@doe.com", "idk");
+		user.addAuthorities(Set.of("role1", "role2", "role3"));
+		userService.saveUser(user);
 	}
 
 }
