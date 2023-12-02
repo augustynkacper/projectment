@@ -24,21 +24,20 @@ public class Token {
 
     private long expiresAt;
 
-    private long issuedAt;
+    private boolean isRevoked;
 
-    public Token(String value, int subjectId, long expiresAt, long issuedAt) {
+    public Token(String value, int subjectId, long expiresAt) {
         this.value = value;
         this.subjectId = subjectId;
         this.expiresAt = expiresAt;
-        this.issuedAt = issuedAt;
     }
 
     public long getExpirationDate() {
         return expiresAt;
     }
 
-    public long getIssueDate() {
-        return issuedAt;
+    public boolean isExpired() {
+        return System.currentTimeMillis() < expiresAt;
     }
 
     @Override
@@ -47,7 +46,6 @@ public class Token {
                 "value='" + value + '\'' +
                 ", subjectId=" + subjectId +
                 ", expiresAt=" + expiresAt +
-                ", issuedAt=" + issuedAt +
                 '}';
     }
 
@@ -56,12 +54,12 @@ public class Token {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Token token = (Token) o;
-        return id == token.id && subjectId == token.subjectId && expiresAt == token.expiresAt && issuedAt == token.issuedAt && Objects.equals(value, token.value);
+        return id == token.id && subjectId == token.subjectId && expiresAt == token.expiresAt && Objects.equals(value, token.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, value, subjectId, expiresAt, issuedAt);
+        return Objects.hash(id, value, subjectId, expiresAt);
     }
 
 }
