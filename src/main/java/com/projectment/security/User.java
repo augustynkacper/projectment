@@ -32,7 +32,9 @@ public class User implements UserDetails {
 
     private String password;
 
-    @ElementCollection
+    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
     private Set<String> authorities = new HashSet<>();
 
     public User(String firstName, String lastName, String email, String password) {

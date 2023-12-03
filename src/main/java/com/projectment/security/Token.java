@@ -37,7 +37,7 @@ public class Token {
     }
 
     public boolean isExpired() {
-        return System.currentTimeMillis() < expiresAt;
+        return System.currentTimeMillis() > expiresAt;
     }
 
     @Override
@@ -46,6 +46,7 @@ public class Token {
                 "value='" + value + '\'' +
                 ", subjectId=" + subjectId +
                 ", expiresAt=" + expiresAt +
+                ", isRevoked=" + isRevoked +
                 '}';
     }
 
