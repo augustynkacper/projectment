@@ -1,2 +1,4 @@
-package com.projectment.service.impl;public class UserServiceImplTest {
+package com.projectment.service.impl;
+
+public class UserServiceImplTest {
 }

@@ -1,2 +1,4 @@
-package com.projectment.security;public class JwtUtilTest {
+package com.projectment.security;
+
+public class JwtUtilTest {
 }
